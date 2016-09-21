@@ -164,17 +164,13 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      // var arr = [-3, -2, -1, 0, -2, -1, 0, 1, -1, 0, 1]
       var rows = this.rows();
       var start = (rows.length - 1) * (-2);
-
       for (var i = start; i < rows.length; i++) {
         if (this.hasMajorDiagonalConflictAt(i)) {
           return true;
         }  
       } 
-      
-
       return false; // fixme
     },
 
@@ -186,11 +182,30 @@
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       // console.log('$$$$$$$$$$$', minorDiagonalColumnIndexAtFirstRow);
+      var j = minorDiagonalColumnIndexAtFirstRow;
+      var rows = this.rows();
+      var counter = 0;
+      for (var i = 0; i < rows.length; i++, j--) {
+        if (rows[i][j] > 0) {
+          counter++;
+          if (counter > 1) {
+            return true;
+          }
+        }
+      }
       return false; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+      var rows = this.rows();
+      var start = (rows.length - 2) * (2) + 1;
+      console.log('********************', start);
+      for (var i = start; i > 0; i--) {
+        if (this.hasMinorDiagonalConflictAt(i)) {
+          return true;
+        }  
+      } 
       return false; // fixme
     }
 
@@ -208,27 +223,6 @@
   };
 
 }());
-
-var assert = function(a, b) {
-  if (a === b) {
-    // console.log('success!');
-  } else {
-    // console.log('expected ' + a + ' to be ' + b);
-  }
-};
-
-var tester = new Board([[0, 0, 0], [0, 0, 0], [0, 0, 0]]);
-var tester2 = new Board([[1, 0, 0], [0, 1, 0], [0, 0, 0]]);
-var tester3 = new Board([[0, 0, 0], [1, 0, 0], [0, 1, 0]]);
-var tester4 = new Board([[0, 0, 1], [0, 1, 0], [0, 0, 1]]);
-
-assert(tester.hasAnyMajorDiagonalConflicts(), false);
-assert(tester2.hasAnyMajorDiagonalConflicts(), true);
-assert(tester3.hasAnyMajorDiagonalConflicts(), true);
-assert(tester4.hasAnyMajorDiagonalConflicts(), true);
-
-
-
 
 
 
